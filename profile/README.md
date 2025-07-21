@@ -34,4 +34,7 @@ Per eseguire correttamente il progetto, assicurati di avere installato sul tuo s
 - Assicurati che Docker sia in esecuzione prima di avviare lo script.
 - In caso di problemi, verifica che Docker e Docker Compose siano correttamente installati e aggiornati.
 
+# Importante
+- Momentaneamente allo stato attuale (21/07/2025) il [FrontEnd in Flutter](https://github.com/ketchapp-for-study/KetchApp-Flutter) non è possibile utilizzarlo a pieno poichè per gli ultimi esami di Sviluppo del Software e Sistemi Cloud, sono state dovute effettuare delle modifiche per poter rispettare le richieste degli esami. In caso si voglia provare ad avviarlo contattare [@Dibbiii](https://github.com/Dibbiii) o [@alessandrobrunoh](https://github.com/alessandrobrunoh) cosi da sistemare le modifiche e renderlo eseguibile.
+
 _2024-2025_
