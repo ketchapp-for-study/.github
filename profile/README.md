@@ -1,5 +1,6 @@
 # Guida all’avvio del progetto KetchApp
 _Progetto Universitario unico realizzato da Alessandro Bruno & Alessandra Di Bella, che comprende gli esami dei corsi: Sviluppo del Software, Sistemi Cloud, Sistemi Mobile._
+
 ## Prerequisiti
 
 Per eseguire correttamente il progetto, assicurati di avere installato sul tuo sistema:
@@ -9,18 +10,21 @@ Per eseguire correttamente il progetto, assicurati di avere installato sul tuo s
 > Questi strumenti sono necessari per gestire e avviare i container del progetto in modo semplice e portabile.
 
 ## Avvio del progetto
+
+1. Scaricare l'ultima [Release](https://github.com/ketchapp-for-study/releases/releases) che si trova nell Repo Git [releases](https://github.com/ketchapp-for-study/releases).
+
 ### Windows
 
-1. Apri **Git Bash** nella cartella principale del progetto.
-2. Esegui il comando:
+2. Apri **Git Bash** nella cartella principale del progetto.
+3. Esegui il comando:
    ```bash
    ./build.sh
    ```
 
 ### Linux & macOS
 
-1. Apri il **Terminale** nella cartella principale del progetto.
-2. Esegui il comando:
+2. Apri il **Terminale** nella cartella principale del progetto.
+3. Esegui il comando:
    ```bash
    ./build.sh
    ```
