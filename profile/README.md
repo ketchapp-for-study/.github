@@ -5,7 +5,7 @@ _Progetto Universitario unico realizzato da Alessandro Bruno & Alessandra Di Bel
 
 Per eseguire correttamente il progetto, assicurati di avere installato sul tuo sistema:
 
-- **Docker**  
+- **Docker**
 - **Docker Compose**
 > Questi strumenti sono necessari per gestire e avviare i container del progetto in modo semplice e portabile.
 
@@ -15,22 +15,22 @@ Per eseguire correttamente il progetto, assicurati di avere installato sul tuo s
 
 ### Windows
 
-2. Apri **Git Bash** nella cartella principale del progetto.
-3. Esegui il comando:
-   ```bash
-   ./build.sh
+2. Apri la cartella principale del progetto.
+3. Avvia il file batch:
+   ```
+   build.bat
    ```
 
 ### Linux & macOS
 
 2. Apri il **Terminale** nella cartella principale del progetto.
-3. Esegui il comando:
-   ```bash
+3. Avvia lo script shell:
+   ```
    ./build.sh
    ```
 
 ## Note
-- Il file `build.sh` si occuperà di costruire e avviare i container necessari tramite Docker Compose.
+- Su Windows avviare il file `build.bat`, su Linux/macOS avviare il file `build.sh`. Entrambi si occuperanno di costruire e avviare i container necessari tramite Docker Compose.
 - Assicurati che Docker sia in esecuzione prima di avviare lo script.
 - In caso di problemi, verifica che Docker e Docker Compose siano correttamente installati e aggiornati.
 
