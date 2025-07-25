@@ -1,6 +1,5 @@
-# Relazione Progetto 2
-
 # Relazione KetchApp | Corso Progettazione e Sviluppo del Software A.A. 2024/2025 | Laurea in Tecnologie dei Sistemi Informatici - UNIBO
+_Scritta da Alesasndro Bruno & Alessandra Di Bella_
 
 # Introduzione
 
