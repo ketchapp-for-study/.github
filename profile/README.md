@@ -182,25 +182,26 @@ L’architettura BackEnd dei Microservizi del nostro progetto è sviluppata per 
 classDiagram
     direction LR
 
-    class Routes {
-        + handleRequest(HttpRequest request)
-        - modelDto : ModelDTO
+    class Client {
+	
+    }
+
+    class Dto {
         <<view>>
     }
 
     class Controller {
-        + routeLogicHandler(ModelDTO dto) : ModelDTO
         <<controller>>
     }
     
-    class Dto {
-	    - String example
-	    <<model>>
+    class Repositories {
+	<<model>>
     }
 
-		Dto --> Routes: recives Request with Dto
-    Routes --> Controller: calls with Dto
-    Controller --> Dto: sends logic handled Dto
+    Client --> Controller : handle the Request
+    Controller --> Repositories : handle the Entity Data
+    Repositories --> Dto : transform Data
+    Dto --> Client : return and visualize dto
 ```
 
 ## Design dettagliato
