@@ -402,8 +402,6 @@ planbuilder.calendar.title.notblank=Calendar title cannot be blank.
 
 ### 4. Definizione @CurrentUser Annotation (Alessandro)
 
-- **Guida:** [https://www.baeldung.com/spring-security-method-security](https://www.baeldung.com/spring-security-method-security)
-
 ```java
 @Target(ElementType.PARAMETER)
 @Retention(RetentionPolicy.RUNTIME)
