@@ -2,9 +2,9 @@
 
 # 1. Introduzione
 
-Questo documento presenta il Solution Design per "KetchApp", un'applicazione mobile progettata per ottimizzare la produttività e le abitudini di studio degli utenti attraverso il metodo Pomodoro, ovvero una tecnica di gestione del tempo che divide il lavoro in intervalli, chiamati "pomodori", separati da brevi pause. L'obiettivo primario di KetchApp è fornire un sistema personalizzato di pianificazione dello studio, integrando funzionalità avanzate come l'organizzazione intelligente delle sessioni basata su intelligenza artificiale, il monitoraggio delle statistiche di studio, un sistema di obiettivi (achievements) e classifiche globali.
+Questo documento descrive il Solution Design di "KetchApp", un'applicazione mobile progettata per ottimizzare la produttività e le abitudini di studio degli utenti attraverso il metodo Pomodoro, ovvero una tecnica di gestione del tempo che divide il lavoro in intervalli, chiamati "pomodori", separati da brevi pause. L'obiettivo primario di KetchApp è fornire un sistema personalizzato di pianificazione dello studio, integrando funzionalità avanzate come l'organizzazione intelligente delle sessioni basata su intelligenza artificiale, il monitoraggio delle statistiche di studio, un sistema di obiettivi (achievements) e classifiche globali.
 
-Con questa relazione illustreremo l'architettura complessiva di KetchApp, le decisioni di design adottate per il backend in Java Spring Boot e l'integrazione con altri microservizi, in conformità con i principi di un Solution Design robusto.
+Con questa relazione descriveremo l'architettura di KetchApp, le decisioni di design adottate e l'integrazione con altri microservizi.
 
 # 2. Raccolta Requisiti e Obiettivi
 
@@ -13,11 +13,11 @@ Con questa relazione illustreremo l'architettura complessiva di KetchApp, le dec
 *Requisiti non funzionali aggiuntivi per il corso Sistemi Cloud.*
 
 1. Sviluppare un’architettura a microservizi
-2. Utilizzare Docker 
+2. Utilizzare Docker
 3. Utilizzare Spring Boot
 4. Utilizzare Kafka per l’invio asincrono delle email
-5. Sviluppare un’autenticazione che sfrutta un token JWT con chiave pubblica e privata 
-6. Mettere alcuni microservizi in cloud 
+5. Sviluppare un’autenticazione che sfrutta un token JWT con chiave pubblica e privata
+6. Mettere alcuni microservizi in cloud
 
 # 3. Analisi
 
@@ -47,13 +47,13 @@ I requisiti non funzionali definiscono le qualità del sistema e i vincoli opera
 - **Sicurezza:** L'applicazione deve implementare meccanismi di autenticazione robusti, inclusa la validazione di token JWT tramite un middleware di sicurezza.
 - **Sistema di Messaggistica Asincrona:** L'applicazione deve utilizzare un broker di messaggi (Kafka) per gestire l'invio asincrono di email (es. promemoria inizio sessione), garantendo scalabilità e affidabilità del sistema di notifica.
 
-## Analisi delle Soluzioni Esistenti e Benchmarking
+## Analisi delle Soluzioni Esistenti
 
-Prima di procedere con la progettazione di KetchApp, è stata condotta un'analisi delle soluzioni esistenti nel mercato delle applicazioni di produttività e studio, in particolare quelle che implementano il metodo Pomodoro o funzionalità di tracciamento dello studio. Questa analisi ha permesso di identificare le funzionalità comuni, i punti di forza e le lacune delle soluzioni attuali.
+Prima di iniziare la fase di progettazione della nostra applicazione, abbiamo analizzato alcune soluzioni esistenti riguardanti la produttività e lo studio, in particolare quelle che implementano il metodo Pomodoro o funzionalità di tracciamento dello studio. Questo ci ha permesso di identificare le funzionalità più comuni, i punti di forza e le funzionalità che avremmo potuto migliorare o aggiungere con la nostra applicazione.
 
 ### **Funzionalità Comuni nelle App Esistenti:**
 
-- **Timer Pomodoro Base:** La maggior parte delle app offre un timer configurabile per le sessioni di studio e le pause.
+- **Timer Pomodoro:** La maggior parte delle app offre un timer configurabile per le sessioni di studio e le pause.
 - **Tracciamento del Tempo:** Funzionalità per registrare il tempo di studio per materia o progetto.
 - **Statistiche:** Visualizzazione di statistiche aggregate come il tempo totale di studio giornaliero o settimanale.
 - **Liste di Attività/To-Do:** Integrazione con liste di cose da fare per organizzare le sessioni.
@@ -184,28 +184,23 @@ deactivate Server
 
 ### Adozione dell'Architettura a Microservizi
 
-- **Contesto:** Il progetto KetchApp prevede un'applicazione mobile con funzionalità complesse e la necessità di scalabilità per un numero potenzialmente elevato di utenti.
-- **Problema:** Un'architettura monolitica avrebbe potuto portare a difficoltà di scalabilità (specialmente per funzionalità specifiche), tempi di deployment lunghi e un'alta complessità di manutenzione su un codebase unico.
-- **Decisione:** Adottare un'architettura a microservizi. L'applicazione è stata suddivisa in servizi autonomi (Autenticazione, Applicazione principale, Kafka per messaggistica).
+- **Contesto:** Il progetto KetchApp prevede lo sviluppo di un'applicazione mobile scalabile e robusta.
+- **Problema:** Un'architettura monolitica avrebbe potuto portare a difficoltà di scalabilità, tempi di deployment lunghi e sarebbe stata difficile da mantenere.
+- **Decisione:** Abbiamo suddiviso l'applicazione in microservizi.
 - **Motivazioni:**
     - **Scalabilità Indipendente:** Ogni microservizio può essere scalato orizzontalmente in base al proprio carico, ottimizzando l'uso delle risorse.
     - **Manutenibilità:** La suddivisione in servizi più piccoli e autonomi rende il codice più facile da comprendere, sviluppare e mantenere.
     - **Flessibilità Tecnologica:** Permette l'utilizzo di tecnologie diverse per servizi specifici (es. Rust per l'autenticazione, Java Spring Boot per la logica principale).
-    - **Resilienza:** Il fallimento di un singolo servizio ha un impatto limitato sul resto del sistema.
 
 ### Gestione dell'Autenticazione tramite JWT Middleware
 
 - **Contesto:** Necessità di un meccanismo di sicurezza robusto per proteggere le API del backend, garantendo che solo gli utenti autenticati possano accedere alle risorse.
-- **Problema:** Le sessioni tradizionali sono state scartate per il loro stato (`statefulness`), che contrasta con i principi `stateless` delle API REST e limita la scalabilità orizzontale. La validazione manuale in ogni controller avrebbe portato a duplicazione di codice e problemi di manutenibilità.
-- `TODO: SPIEGARE PROBLEMI FLUTTER FIREBASE`
-- **Decisione:** Implementare un middleware di sicurezza basato su Spring Security configurato per la validazione dei token JWT (JSON Web Token). La validazione avviene tramite una chiave pubblica RSA.
+- **Problema:** Le sessioni tradizionali sono state scartate in quanto sono stateful e questo contrasta i principi stateless delle API REST.
+- **Decisione:** Implementare un middleware di sicurezza basato su Spring Security configurato per la validazione dei token JWT tramite una chiave pubblica RSA.
 - **Motivazioni:**
-    - **Statelessness:** I JWT sono auto-contenuti, eliminando la necessità per il server di mantenere lo stato della sessione, favorendo la scalabilità.
-    - **Centralizzazione della Sicurezza:** Il middleware intercetta ogni richiesta HTTP in entrata, centralizzando la logica di validazione e impostando il contesto di sicurezza di Spring.
+    - **Statelessness:** I JWT sono auto-contenuti, eliminando la necessità per il server di mantenere lo stato della sessione in un database.
+    - **Centralizzazione della Logica:** Il middleware intercetta ogni richiesta HTTP in entrata, centralizzando la logica di validazione e impostando il contesto di sicurezza di Spring.
     - **Efficienza:** La validazione avviene rapidamente senza interpellare un database di sessioni ad ogni richiesta.
-- **Alternative Scartate:**
-    - **Autenticazione basata su sessioni:** Scartata per il requisito di `statelessness` delle API REST e per le implicazioni sulla scalabilità.
-    - **Validazione JWT manuale in ogni controller:** Scartata per la duplicazione di codice e la difficoltà di manutenibilità.
 
 ### Comunicazione Asincrona con Apache Kafka per Notifiche
 
@@ -215,7 +210,6 @@ deactivate Server
 - **Motivazioni:**
     - **Disaccoppiamento:** Il servizio che crea il piano di studio non dipende direttamente dal servizio di invio email.
     - **Affidabilità:** I messaggi vengono mantenuti in Kafka, garantendo che le notifiche vengano inviate anche se il servizio di invio email è temporaneamente non disponibile.
-    - **Scalabilità:** Kafka è progettato per gestire alti volumi di messaggi e permette di scalare indipendentemente i produttori e i consumatori.
 
 ### Persistenza Dati con PostgreSQL
 
@@ -223,14 +217,14 @@ deactivate Server
 - **Problema:** Bisognava scegliere il database più adatto per garantire la consistenza, l'integrità e le prestazioni dei dati in base alle nostre disponibilità e conoscenze.
 - **Decisione:** Utilizzare PostgreSQL come database relazionale principale per entrambi i microservizi (Autenticazione e Applicazione principale).
 - **Motivazioni:**
-    - **Affidabilità e Consistenza:** PostgreSQL è noto per la sua robustezza, il pieno supporto ACID (Atomicità, Consinstenza, Isolamento, Durabilità) e la capacità di gestire dati complessi.
+    - **Affidabilità e Consistenza:** PostgreSQL è un database relazionale robusto che supporta ACID (Atomicità, Consistenza, Isolamento, Durabilità) e ha la capacità di gestire dati complessi.
     - **Open Source:** Non ha costi di licenza.
     - **Ecosistema:** Ampio supporto della community e integrazione con Spring Data JPA.
 
 ### Integrazione AI per la Pianificazione dello Studio
 
 - **Contesto:** Necessità di fornire una pianificazione dello studio personalizzata e ottimizzata basata sugli input dell'utente.
-- **Problema:** Implementare una logica di pianificazione complessa manualmente sarebbe motlo difficile e poco flessibile.
+- **Problema:** Implementare una logica di pianificazione complessa manualmente sarebbe molto difficile e poco flessibile.
 - **Decisione:** Integrare le Gemini API (Google) per sfruttare le capacità di intelligenza artificiale nella generazione del piano di studio.
 - **Motivazioni:**
     - **Ottimizzazione:** Permette di generare piani di studio intelligenti che tengono conto di materie, ore di studio e impegni, massimizzando l'efficienza.
@@ -262,19 +256,13 @@ deactivate Server
 
 # 4. Implementazione e Test
 
-`TODO: Da Fare`
+## Test Di Integrazione
 
-`TODO: chiedere | Quanti test dobbiamo fare? Uno per ogni classe?`
+Nel nostro progetto, abbiamo scelto di sottoporre a test di integrazione il livello di routing, `PlanBuilderRoutes`, che gestisce le richieste HTTP in entrata relative alla creazione di piani di studio. Questo componente si occupa di ricevere le richieste, validare i dati e indirizzarle al controller appropriato.
 
-`TODO: chiedere | Dobbiamo farli sia per KetchApp App, Auth, Kafka o basta uno?`
+### Test Implementati
 
-### Esecuzione di Test Unitari, di Integrazione e di Accettazione Utente (UAT)
-
-### Test Di Integrazione
-
-Nel nostro progetto, abbiamo scelto di sottoporre a test di integrazione il livello di routing, `PlanBuilderRoutes`, che gestisce le richieste HTTP in entrata relative alla creazione di piani di studio. Questo componente si occupa di ricevere le richieste, validare i dati e indirizzarle al controller appropriato. 
-
-**In particolare abbiamo implementato i seguenti test:**
+Nei test implementati abbiamo coperto i seguenti scenari:
 
 1. **testCreatePlanBuilder():** Verifica la creazione di un piano con dati validi aspettandosi che una richiesta valida porti a una risposta 200 OK e che il controller venga invocato con i dati corretti.
 2. **testCreatePlanBuilder_InternalServerError():** Verifica la gestione di un errore interno del server (HTTP 500).
@@ -289,19 +277,15 @@ Per realizzare questi test abbiamo utilizzato il framework JUnit 5 in combinazio
 - **Mokito:** permette di sostituire le dipendenze della classe che stiamo testando con delle versioni fittizie chiamate Mock che possono essere programmate per agire in un determinato modo simulando l’oggetto reale.
 - **Spring MockMvc:** è uno strumento fornito da Spring Test per simulare richieste HTTP verso i controller Spring senza dover avviare un server HTTP completo.
 
-In questo modo i test vengono eseguiti in modo automatico verificando la correttezza del flusso delle richieste API e la validazione degli input. 
+In questo modo i test vengono eseguiti in modo automatico verificando la correttezza del flusso delle richieste API e la validazione degli input.
 
 ### Pattern
 
-Il metodo di test che abbiamo usato segue il patter Arrange, Act, Assert (AAA), ovvero nella fase di Arrange prepariamo i dati di input (come i DTO di richiesta) e definiamo il comportamento dei mock, nella fase di Act eseguiamo l’operazione da testare, ovvero in questo caso l’invio di una richiesta HTTP simulata grazie a Spring MockMvc e infine nella fase di Assert verifichiamo la correttezza dei risultati. 
+Il metodo di test che abbiamo usato segue il patter Arrange, Act, Assert (AAA), ovvero nella fase di Arrange prepariamo i dati di input (come i DTO di richiesta) e definiamo il comportamento dei mock, nella fase di Act eseguiamo l’operazione da testare, ovvero in questo caso l’invio di una richiesta HTTP simulata grazie a Spring MockMvc e infine nella fase di Assert verifichiamo la correttezza dei risultati.
 
-### Test Unitari
+## Test Unitari
 
 Abbiamo implementato una serie di test unitari per la classe **`KafkaProducer`**, il cui compito è serializzare un oggetto `PlanBuilderRequestDto` in una stringa JSON e inviarlo in un topic Kafka.
-
-### Strumenti e Metodologia
-
-Per la stesura dei test unitari, abbiamo utilizzato gli stessi strumenti del livello di integrazione: **JUnit 5** come framework principale e **Mockito** per la simulazione delle dipendenze esterne. Come per i test di integrazione, abbiamo seguito il pattern **Arrange, Act, Assert (AAA)**.
 
 ### Test Implementati
 
@@ -309,11 +293,11 @@ Nei test implementati abbiamo coperto i seguenti scenari:
 
 - **`testSendToKafkaSuccess()`:** Verifica il caso di successo, in cui un oggetto `PlanBuilderRequestDto` valido viene correttamente serializzato in JSON e inviato al topic Kafka corretto.
 - **`testSendToKafkaJsonProcessingException()`:** Verifichiamo un caso di errore. Simuliamo una `JsonProcessingException` da parte dell'`ObjectMapper` e verifichiamo che il nostro producer non tenti di inviare il messaggio a Kafka, confermando che l'eccezione è gestita in modo corretto.
-- **Test di gestione dei valori nulli e vuoti:** Abbiamo sviluppato una serie di test per verificare il comportamento del producer in caso valori non validi o mancanti, come un oggetto `plan` vuoto (`testSendToKafkaWithEmptyPlan`), nullo (`testSendToKafkaWithNullPlan`), incompleto (`testSendToKafkaWithIncompletePlan`), o email vuote e nulle (`testSendToKafkaWithEmptyEmail`, `testSendToKafkaWithNullEmail`). Per ogni scenario, abbiamo verificato che il componente gestisse correttamente questi casi, inviando comunque un messaggio formattato in modo appropriato, delegando la validazione dei dati a un livello superiore. (?)
+- **Test di gestione dei valori nulli e vuoti:** Abbiamo sviluppato una serie di test per verificare il comportamento del producer in caso valori non validi o mancanti, come un oggetto `plan` vuoto (`testSendToKafkaWithEmptyPlan`), nullo (`testSendToKafkaWithNullPlan`), incompleto (`testSendToKafkaWithIncompletePlan`), o email vuote e nulle (`testSendToKafkaWithEmptyEmail`, `testSendToKafkaWithNullEmail`). Per ogni scenario, abbiamo verificato che il componente gestisse correttamente questi casi, inviando comunque un messaggio formattato in modo appropriato, delegando la validazione dei dati a un livello superiore.
 
 # 5. Distribuzione e Manutenzione
 
-Il nostro applicativo non andrà in produzione, ma se dovessimo pubblicarlo eseguiremmo prima dei test per valutarne la sicurezza e le eventuali vulnerabilità. Per questo abbiamo scannerizzato i codici sorgenti dei nostri microserivzi tramite i tool SonarQube e Qodana per identificare eventuali falle di sicurezza e questo é il risultato: 
+Il nostro applicativo non andrà in produzione, ma se dovessimo pubblicarlo eseguiremmo prima dei test per valutarne la sicurezza e le eventuali vulnerabilità. Per questo abbiamo scannerizzato i codici sorgenti dei nostri microserivzi tramite i tool SonarQube e Qodana per identificare eventuali falle di sicurezza e questo é il risultato:
 
 ## Qodana
 
