@@ -75,7 +75,7 @@ Analizzando le applicazioni esistenti abbiamo notato diverse aree in cui sono pr
 
 ## KetchApp Context Diagram (Alto Livello)
 
-```mermaid
+```
 @startuml
 !include https://raw.githubusercontent.com/kirchsth/C4-PlantUML/extended/C4_Container.puml
 
@@ -97,7 +97,7 @@ Rel_D(backend, email, "Invia Email con dettagli sul Piano Studio")
 
 ## KetchApp Diagram Context (Basso Livello)
 
-```mermaid
+```
 @startuml
 !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
 
@@ -151,7 +151,7 @@ Rel_L(kafkaengine, mail, "Invia notifiche via email")
 
 ## **Flusso del Token JWT**
 
-```mermaid
+```
 @startuml
 title KetchApp - Token JWT Flow
 
