@@ -1,4 +1,5 @@
-# Relazione Solution Design - KetchApp
+# Relazione Solution Design KetchApp | Corso Sistemi Cloud A.A. 2024/2025 | Laurea in Tecnologie dei Sistemi Informatici - UNIBO
+_By Alesasndro Bruno & Alessandra Di Bella_
 
 # 1. Introduzione
 
