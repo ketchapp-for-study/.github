@@ -83,7 +83,7 @@ title KetchApp - Context Diagram
 
 Person(user, "User", "Utente che crea e gestisce i propri piani di studio")
 System(frontend, "Mobile", "Interfaccia utente che permette di visualizzare e modificare i piani di studio")
-Container(backend, "Api Gateway", "Punto di accesso unico che instrada le richieste dell'app mobile ai microservizi interni")
+Container(backend, "Application Api", "Punto di accesso unico che instrada le richieste dell'app mobile ai microservizi interni")
 System_Ext(email, "Invio Notifiche Email", "Invia notifiche e comunicazioni via email all'utente.")
 
 Rel_D(user, frontend, "Interagisce con Applicazione")
