@@ -442,4 +442,4 @@ Rel_L(smtp, mail, "Invia notifiche via Email")
 
 @enduml
 ```
-![image.png](Relazione%20Solution%20Design%20-%20KetchApp%2024268c8ca0e9806aaa29c47556226de5/36f9fcad-6871-4775-bd73-392fa4889eef.png)
+![image.png](Relazione%20Solution%20Design%20-%20KetchApp%2024268c8ca0e9806aaa29c47556226de5/test-Deployment-Diagram.jpg)
