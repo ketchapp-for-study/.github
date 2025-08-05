@@ -82,8 +82,10 @@ Analizzando le applicazioni esistenti abbiamo notato diverse aree in cui sono pr
 title KetchApp - Context Diagram
 
 Person(user, "User", "Utente che crea e gestisce i propri piani di studio")
-System(frontend, "Mobile", "Interfaccia utente che permette di visualizzare e modificare i piani di studio")
-Container(backend, "Application Api", "Punto di accesso unico che instrada le richieste dell'app mobile ai microservizi interni")
+Container_Boundary(ketchapp, "KetchApp Application") {
+    System(frontend, "FrontEnd UI", "Interfaccia utente che permette di visualizzare e modificare i piani di studio")
+    Container(backend, "Backend", "Punto di accesso unico che instrada le richieste dell'app mobile ai microservizi interni")
+}
 System_Ext(email, "Invio Notifiche Email", "Invia notifiche e comunicazioni via email all'utente.")
 
 Rel_D(user, frontend, "Interagisce con Applicazione")
@@ -105,8 +107,10 @@ title KetchApp - Diagram Context
 
 Person(user, "Utente", "Crea e gestisce i propri piani di studio e le relative attività.")
 
+
 Container_Boundary(ketchapp_application, "KetchApp Application") {
-    Component(frontend, "FrontEnd", "Flutter", "Permette all' utente di gestire i propri piani di studio e le relative attività.")
+    Component(frontend, "FrontEnd UI ", "Flutter", "Permette all' utente di gestire i propri piani di studio e le relative attività.")
+
     Container_Boundary(bffcompose, "Bff Compose") {
         Container(bffapi, "BackEnd Bff Api", "Spring Boot", "Gestisce le richieste dell' utente e richiama i microservizi interssati.")
     }
@@ -146,11 +150,11 @@ Rel_L(kafkaengine, mail, "Invia notifiche via email")
 
 @enduml
 ```
-
+TODO: inserire SMPT Component (KafkaEngine -> SMPT -> EmailService)
 ![test-KetchApp___Diagram_Context.png](Relazione%20Solution%20Design%20-%20KetchApp%2024268c8ca0e9806aaa29c47556226de5/test-KetchApp___Diagram_Context.png)
 
 ## **Flusso del Token JWT**
-
+TODO: Da mettere più specifico fino a Auth
 ```
 @startuml
 title KetchApp - Token JWT Flow
@@ -330,3 +334,6 @@ Il nostro applicativo non andrà in produzione, ma se dovessimo pubblicarlo eseg
 
 > In generale vediamo che tutti i microservizi mostrano uno stato "Passed" nelle scansioni SonarQube, il che è un buon punto di partenza, tuttavia ci sono alcune vulnerabilitá da sistemare, in particolare in KetchApp-App-Api. Nel caso volessimo mandare in produzione il nostro applicativo dovremmo sistemare prima queste problematiche.
 >
+
+
+TODO: Deployment Diagram
