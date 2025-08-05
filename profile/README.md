@@ -1,5 +1,5 @@
 # Relazione Solution Design KetchApp | Corso Sistemi Cloud A.A. 2024/2025 | Laurea in Tecnologie dei Sistemi Informatici - UNIBO
-_By Alesasndro Bruno & Alessandra Di Bella_
+_By Alessandro Bruno & Alessandra Di Bella_
 
 # 1. Introduzione
 
@@ -83,8 +83,8 @@ title KetchApp - Context Diagram
 
 Person(user, "User", "Utente che crea e gestisce i propri piani di studio")
 Container_Boundary(ketchapp, "KetchApp Application") {
-    System(frontend, "FrontEnd UI", "Interfaccia utente che permette di visualizzare e modificare i piani di studio")
-    Container(backend, "Backend", "Punto di accesso unico che instrada le richieste dell'app mobile ai microservizi interni")
+    System(frontend, "FrontEnd", "Interfaccia utente che permette di visualizzare e modificare i piani di studio")
+    Container(backend, "BackEnd", "Punto di accesso unico che instrada le richieste dell'app mobile ai microservizi interni")
 }
 System_Ext(email, "Invio Notifiche Email", "Invia notifiche e comunicazioni via email all'utente.")
 
@@ -95,7 +95,7 @@ Rel_D(backend, email, "Invia Email con dettagli sul Piano Studio")
 @enduml
 ```
 
-![test-KetchApp___Context_Diagram.png](Relazione%20Solution%20Design%20-%20KetchApp%2024268c8ca0e9806aaa29c47556226de5/test-KetchApp___Context_Diagram.png)
+[![test-KetchApp___Context_Diagram.png](Relazione%20Solution%20Design%20-%20KetchApp%2024268c8ca0e9806aaa29c47556226de5/test-KetchApp___Context_Diagram.png)](https://uml.planttext.com/plantuml/png/PL9BRnen4BxlhvXoAP4QkFJKKn8WKjI7KAASqM0Fx0YllVA39bJzx_sy443gIfQzzeo_b-zIvfXBvvfFweqhLgZDkK_VfjF8loTRpMrPboJH19_5vua9tNIdqRGfjzFPrzkbOvzVV_wOoXlEhLXihcOePlKI9tszkicQdT1toQQzxtkwfLg01fehRoDtJREKc88VLwGlD7h5DAfpXHGoBKOK9g6jfAp922drCVGHax9Niaef5wjXTDESqLSFeNZByNsygz3SzxZpp0B3gU6imOzkw4z3-5xUKvPkl8c3MelonxfSU5lfF64pRjWOPIeNQht4JZ9-G6AlgR3Jmu6ZW6uNh6u04WV2_p6ja6UsupMRtH7q0QiJvhBu76eJO2MbGCMh2GEk-fGZMoPu6zMq2cz0Gfpx3Ad0NYjEMAbJ4mCitUj1qGKHNe7-jpdANItUybWwLZTet6kWNo5NtW1PrFtHwO39dm-WFNIL31_WO5MEV6enCGWSxPa0fNaMjvgVahqoTZ2JjqEOU5mVSTJB16srw_agY8ivinFiq0M1zxsUwkSN2w_by574K6yH56yTCYYEbWWaqCj76iqTMl5U_m40)
 
 ## KetchApp Diagram Context (Basso Livello)
 
@@ -125,34 +125,53 @@ Container_Boundary(ketchapp_application, "KetchApp Application") {
     }
 
     Container_Boundary(kafkacompose, "Kafka Compose") {
-        Container(kafkaengine, "Kafka Engine", "Spring Boot Kafka", "Gestisce la ricezione e l' invio dei messaggi tra i microservizi.")
         Container(kafka_broker, "Kafka Broker", "Apache Kafka", "Gestisce la ricezione e l'invio dei messaggi tra i microservizi.")
         Container(kafka_zookeeper, "Zookeeper", "Apache Zookeeper", "Gestisce la configurazione e il coordinamento dei microservizi.")
     }
+    
+    Container_Boundary(kafkaconsumercompose, "Kafka Consumer Compose") {
+        Container(kafkaengine, "Kafka Engine", "Spring Boot Kafka", "Gestisce la ricezione e l' invio dei messaggi tra i microservizi.")
+    }
+  
 
     Container_Boundary(supabase, "Supabase") {
         ContainerDb(appdb, "App Database", "PostgreSQL", "Gestisce la memorizzazione dei dati relativi agli utenti e alle loro interazioni con l' applicazione.")
     }
 }
 
-System_Ext(mail, "Mail Service", "Servizio di invio email per notifiche e comunicazioni.")
+System_Ext(smtp, "SMTP Service", "Servizio di invio email per notifiche e comunicazioni.")
+System_Ext(mail, "Gmail Service", "Servizio di invio su Gmail per notifiche e comunicazioni.")
 
 Rel_R(user, frontend, "Interagisce con l' applicazione")
 Rel_D(frontend, bffapi, "Richiede dati e servizi")
 Rel_D(bffapi, appapi, "Richiede dati e servizi")
-Rel_D(bffapi, authapi, "Richiede autenticazione e autorizzazione")
+Rel_R(bffapi, authapi, "Richiede autenticazione e autorizzazione")
 Rel_D(authapi, authdb, "Memorizza e recupera dati utente")
 Rel_D(appapi, appdb, "Memorizza e recupera dati utente")
-Rel_D(appapi, kafka_broker, "Invia messaggi")
-Rel_L(kafka_broker, kafkaengine, "Consuma messaggi")
+Rel_L(appapi, kafka_broker, "Invia messaggi")
+Rel_D(kafka_broker, kafkaengine, "Consuma messaggi")
 Rel_D(kafka_broker, kafka_zookeeper, "Gestisce la configurazione e il coordinamento")
-Rel_L(kafkaengine, mail, "Invia notifiche via email")
+Rel_R(kafkaengine, smtp, "Invia Email via SMTP")
+Rel_D(smtp, mail, "Invia notifiche via Email")
 
 @enduml
 ```
-TODO: inserire SMPT Component (KafkaEngine -> SMPT -> EmailService)
-![test-KetchApp___Diagram_Context.png](Relazione%20Solution%20Design%20-%20KetchApp%2024268c8ca0e9806aaa29c47556226de5/test-KetchApp___Diagram_Context.png)
+# **Spiegazione dei Componenti:**
 
+[![test-KetchApp___Diagram_Context.png](Relazione%20Solution%20Design%20-%20KetchApp%2024268c8ca0e9806aaa29c47556226de5/test-KetchApp___Diagram_Context.png)](https://uml.planttext.com/plantuml/png/nLPDJnin4Btlht2v4AH2BZtrn3T2W9I6SkabSdOdcr5sRSlsKaZ5V-b_wH_hZBtnPY50wAL84DkPvtdp_3pcq7bfVLDNsITKUTKK8ERU6_TrEBJovq69VjvC6mSsryg3yWUvheUcaeen-yuN5Kw79r_sHxnqTtCzhANpO6bfSg9henLZ3E-VUVGLY2lm-Vp86B4lJb6MLjRYXBT-y5as0kkq6d2wpsBdZlF13erEB4W1eWJdqUKWK1YhZQKFb0f5WSBvfa1DCPJ1GYKzteEGdZxG__bziBENPHcdaQZ0Jevremff7mSB9YEDcT1lXJd1jA9yYUDHjxop9tvbWdvIMOEP3PeKX3ZduPagnDsbOCRdLUD91XvIKJNGHCYgsXLDA8efXshiFnOJYRoePpgRvKpF0IK-diqYMGU9V0_7uT8WXyfymUmPScIGQTyI9LMAOwqzJozMsZCdpET8Soe3rcfglv2rf9fgp2qbjlUuH87qjNME2c7opE7frHBe9BeI-0pUBe72OmdnkFulzSRFrxZJx3to5DAov-2M_b7kyQ5FV5V8m9Iyk2GlCk6ufYqkb-rQ0MM5iQ94jfVlT1eo5jDLmbFfvLIwSCT6sldImkstQvxTG1st9ZqAAdxbGnIoIoA2fucAjbha5WfGIvJL5aejv6mXEwckUFgELW4ocLgz2CqXGex3D8XcP3wdxiBBVUqadorqig6wfyjL01qqqC6M9Gfldv_xHlrQ3ajDIS446ZzMupKElRLr7jH2PrWsDfqXLhIcRO5ArYHeose3ZQVmznqrbMjgxjFFLOthsyWBggH9Wfw5wRCRjOt4uaCQSt6lEiKr9bYKIRJ3pHMmkOs9tgPMyBgrrsdNAvklRj2sRWzj8Q2GZpNSnlXMX9swqkWEt3vIlwadPmz-u6flk9ARxoDnoohaKTueYERc7wM3Mf8vo4D2QOypP5y1PQeRrUO8ygrjpG2kBW3VtDirucAxxRCnL9Dn-nwllNQNeVeogBYXUa8oy7JjWKmlpJWqOFel8-WCelL2Wgm2Krz_6p3k0AcN9iIBdjblc2bdWgRksBK_Ve7pXfIIaK1yC3feItDblIs1rmduhArTqWd9T6bIcdvK_wx62xuTgDUxFjIQajwzvAsV8-kpO2eUiRyJZHZJsZD6TgPBE7RR8Lc5_bFy2m00)
+1. **Smartphone Utente (App KetchApp - Flutter):** L'applicazione mobile, interfaccia utente finale, da cui l'utente interagisce con il sistema.
+2. **PC Fisso Nostro (Backend-Fe - Frontend che espone le API al client):** Un Backend For Frontend (BFF) che agisce come gateway per le richieste provenienti dall'applicazione mobile. Questo componente semplifica l'interazione del client con i vari microservizi backend e gestisce l'inoltro dei token JWT.
+3. **KetchApp Auth API (Rust - Ambiente Cloud):** Un microservizio dedicato esclusivamente alla gestione dell'autenticazione e autorizzazione.
+    - **Generazione JWT:** Dopo un login riuscito da parte dell'utente (richiesta dal BFF), la Rust Auth API genera e firma digitalmente un JSON Web Token (JWT). Questo token, contenente le informazioni sull'utente, viene inviato al BFF e poi al client.
+    - **Validazione JWT:** È anche responsabile della validazione dei token JWT per le richieste di autenticazione.
+    - Utilizza un **Auth Database (PostgreSQL)** per memorizzare i dati degli utenti.
+4. **KetchApp API (Java - Ambiente Cloud):** Il microservizio principale del backend, scritto in Java con Spring Boot, che implementa la logica di business dell'applicazione (pianificazione, statistiche, achievements, classifiche).
+    - Accede e persiste i dati nel **KetchApp Database (PostgreSQL)**.
+5. **Java Kafka API (Java - Ambiente Cloud):** Un microservizio separato che gestisce le comunicazioni asincrone all'interno dell'applicazione.
+    - **Gestisce Servizi Asincroni:** In particolare, è responsabile della produzione e del consumo di messaggi da e verso il broker Kafka.
+    - Interagisce con **Kafka (Apache Kafka)**, che funge da Message Broker per la gestione dei messaggi.
+6. **Email Inviata (Servizio esterno di invio email):** Un servizio esterno che consuma i messaggi dal topic Kafka relativi alle notifiche (es. piani di studio creati) e si occupa dell'invio effettivo delle email agli utenti.
+   
 ## **Flusso del Token JWT**
 TODO: Da mettere più specifico fino a Auth
 ```
@@ -160,30 +179,44 @@ TODO: Da mettere più specifico fino a Auth
 title KetchApp - Token JWT Flow
 
 actor Utente as U
-participant "Mobile" as Client
-participant "Api Gateway" as Server
+participant "FrontEnd" as Client
+participant "Bff BackEnd" as Bff
+participant "Auth BackEnd" as Auth
 
 == Login e JWT ==
 U -> Client: Login (credenziali)
-Client -> Server: Richiesta di login
-activate Server
-Server -> Client: Restituisce il JWT
-deactivate Server
+Client -> Bff: Richiesta di login(credenziali)
+activate Bff
+Bff -> Auth: Richiesta di login(credenziali)
+deactivate Bff
+activate Auth
+Auth -> Auth: Valida le credenziali
+Auth -> Auth: Genera il JWT
+Auth -> Client: Restituisce il JWT
+deactivate Auth
 note right of Client: Client memorizza il JWT
 
 ' Fase 2: Uso del token per accedere a una risorsa
 == Accesso API protetta ==
-Client -> Server: Richiesta API\n(Header: Authorization: Bearer JWT)
-activate Server
-Server -> Server: Valida il JWT
-Server --> Client: Risposta API (dati)
+Client -> Bff: Richiesta API\n(Header: Authorization: Bearer JWT)
+note right of Client: Prende il Token Memorizzato
+activate Bff
+Bff -> Bff: Valida il JWT
+Bff --> App: Risposta API (dati)
+deactivate Bff
+activate App
+App -> App: Esegue Logica della Api
+App -> Bff: Risposta API(dati)
+deactivate App
+activate Bff
+Bff -> Client: Risposta API(dati)
+deactivate Bff
 Client -> U: Visualizza dati
-deactivate Server
 
 @enduml
 ```
 
-![test-KetchApp___Token_JWT_Flow.png](Relazione%20Solution%20Design%20-%20KetchApp%2024268c8ca0e9806aaa29c47556226de5/test-KetchApp___Token_JWT_Flow.png)
+[![test-KetchApp___Token_JWT_Flow.png](Relazione%20Solution%20Design%20-%20KetchApp%2024268c8ca0e9806aaa29c47556226de5/test-KetchApp___Token_JWT_Flow.png)](https://uml.planttext.com/plantuml/png/ZLF1JXin4BsljFymuj9muC9nfLGa5IbGAY74jfTUBEya6U7ObZqBKhwU6MUpWOYWtjOxxysyDy--ocmIznjNLqpi47uXs_KiHhY0f_2C7kx-Fi72XTUwgYjZEIHe6JqZc0njNKMXawLeFCFP8WNFrxuxq-8FHu8xGioNIvWR-xm7oVa8CUjv_G6YFtJuT0htOKKUi6YQJkkgXOllmvncA4vimWxzbeoZyxhQ5HKcanfu9Bic5C_G4JWb7E758RqOSLU4gLgXgeB_u7RuaJsUTWwAiR7R7-5q1cJZxveSWtwYnsI0d3e-5FUE7qKDSK_PueXv9s8trWVvJBHQCuJbI1tsii5DIBJT7cRKrJTOc8nmsK2R0tJeWCj5Y9Z0M2jYauGFlJVIDeUKJSbc9gKiXDd3BSGaGrasfI6TZ42G__pa1erqR8fQrMAOWczWZYR9GD5qVih3GqBV5UUxc_fxRuR3YI2BW67pUyEbf1kFKSNb60PjCEb4ovUvnYYXw5iPwDSPLpsMcsYDhiv9fqWZQ5Z0OSOd8qhJJzMFiN_Te50EIs_5CULUJ6lC2jUGhsHrykhV0000)
 
 # Definizione delle Decisioni Architetturali
 
