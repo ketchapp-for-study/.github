@@ -173,7 +173,6 @@ Rel_D(smtp, mail, "Invia notifiche via Email")
 6. **Email Inviata (Servizio esterno di invio email):** Un servizio esterno che consuma i messaggi dal topic Kafka relativi alle notifiche (es. piani di studio creati) e si occupa dell'invio effettivo delle email agli utenti.
    
 ## **Flusso del Token JWT**
-TODO: Da mettere più specifico fino a Auth
 ```
 @startuml
 title KetchApp - Token JWT Flow
