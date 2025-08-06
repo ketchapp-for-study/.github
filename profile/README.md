@@ -435,7 +435,10 @@ Rel_L(smtp, mail, "Invia notifiche via Email")
 ```
 ![image.png](Relazione%20Solution%20Design%20-%20KetchApp%2024268c8ca0e9806aaa29c47556226de5/test-KetchApp___Deployment_Diagram.png)
 
-### Spiegazione Merda
+### Spiegazione
+- **LocalHost Machine:** Host Locale
+- **Smartphone:** Host Client dell' Utente in quanto la nostra è un Applicazione Mobile
+- **Supabase:** Host Cloud supabase.com con Database PostgreSQL
 
 ## Manutenzione
 Il nostro applicativo non andrà in produzione, ma se dovessimo pubblicarlo eseguiremmo prima dei test per valutarne la sicurezza e le eventuali vulnerabilità. Per questo abbiamo scannerizzato i codici sorgenti dei nostri microserivzi tramite i tool SonarQube e Qodana per identificare eventuali falle di sicurezza e questo é il risultato:
