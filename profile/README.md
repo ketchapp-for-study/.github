@@ -97,13 +97,20 @@ Rel_D(backend, email, "Invia Email con dettagli sul Piano Studio")
 
 [![test-KetchApp___Context_Diagram.png](Relazione%20Solution%20Design%20-%20KetchApp%2024268c8ca0e9806aaa29c47556226de5/test-KetchApp___Context_Diagram.png)](https://uml.planttext.com/plantuml/png/PL9BRnen4BxlhvXoAP4QkFJKKn8WKjI7KAASqM0Fx0YllVA39bJzx_sy443gIfQzzeo_b-zIvfXBvvfFweqhLgZDkK_VfjF8loTRpMrPboJH19_5vua9tNIdqRGfjzFPrzkbOvzVV_wOoXlEhLXihcOePlKI9tszkicQdT1toQQzxtkwfLg01fehRoDtJREKc88VLwGlD7h5DAfpXHGoBKOK9g6jfAp922drCVGHax9Niaef5wjXTDESqLSFeNZByNsygz3SzxZpp0B3gU6imOzkw4z3-5xUKvPkl8c3MelonxfSU5lfF64pRjWOPIeNQht4JZ9-G6AlgR3Jmu6ZW6uNh6u04WV2_p6ja6UsupMRtH7q0QiJvhBu76eJO2MbGCMh2GEk-fGZMoPu6zMq2cz0Gfpx3Ad0NYjEMAbJ4mCitUj1qGKHNe7-jpdANItUybWwLZTet6kWNo5NtW1PrFtHwO39dm-WFNIL31_WO5MEV6enCGWSxPa0fNaMjvgVahqoTZ2JjqEOU5mVSTJB16srw_agY8ivinFiq0M1zxsUwkSN2w_by574K6yH56yTCYYEbWWaqCj76iqTMl5U_m40)
 
-## KetchApp Diagram Context (Basso Livello)
+## Spiegazione dei Componenti (Context Diagram)
+
+- **User (Utente)**: É l'utente che interagisce direttamente con l'applicazione. Lui puó effettuare registrazione/login, creare i propri piani di studio, visualizzare le proprie statistiche, il proprio profilo e le classifiche globali. É il punto di partenza per tutte le funzionalità del’applicativo.
+- **FrontEnd (Interfaccia Utente)**: Sviluppato in Flutter, è il componente che gestisce l'interfaccia utente. Permette all'utente di visualizzare i piani di studio e tutte le altre funzionalità dell'applicazione. È il punto di contatto diretto per l'utente e comunica con il BackEnd.
+- **BackEnd**: Riceve le richieste provenienti dal FrontEnd e fornisce le risposte adeguate.
+- **Invio Notifiche Email (External System)**: Questo è un sistema esterno con cui l'applicazione comunica. La sua funzione è inviare notifiche via email all'utente.
+
+## KetchApp Container Diagram (Basso Livello)
 
 ```
 @startuml
 !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
 
-title KetchApp - Diagram Context
+title KetchApp - Container Diagram
 
 Person(user, "Utente", "Crea e gestisce i propri piani di studio e le relative attività.")
 
@@ -160,22 +167,32 @@ Rel_D(smtp, mail, "Invia notifiche via Email")
 
 [![test-KetchApp___Diagram_Context.png](Relazione%20Solution%20Design%20-%20KetchApp%2024268c8ca0e9806aaa29c47556226de5/test-KetchApp___Diagram_Context.png)](https://uml.planttext.com/plantuml/png/nLPDJnin4Btlht2v4AH2BZtrn3T2W9I6SkabSdOdcr5sRSlsKaZ5V-b_wH_hZBtnPY50wAL84DkPvtdp_3pcq7bfVLDNsITKUTKK8ERU6_TrEBJovq69VjvC6mSsryg3yWUvheUcaeen-yuN5Kw79r_sHxnqTtCzhANpO6bfSg9henLZ3E-VUVGLY2lm-Vp86B4lJb6MLjRYXBT-y5as0kkq6d2wpsBdZlF13erEB4W1eWJdqUKWK1YhZQKFb0f5WSBvfa1DCPJ1GYKzteEGdZxG__bziBENPHcdaQZ0Jevremff7mSB9YEDcT1lXJd1jA9yYUDHjxop9tvbWdvIMOEP3PeKX3ZduPagnDsbOCRdLUD91XvIKJNGHCYgsXLDA8efXshiFnOJYRoePpgRvKpF0IK-diqYMGU9V0_7uT8WXyfymUmPScIGQTyI9LMAOwqzJozMsZCdpET8Soe3rcfglv2rf9fgp2qbjlUuH87qjNME2c7opE7frHBe9BeI-0pUBe72OmdnkFulzSRFrxZJx3to5DAov-2M_b7kyQ5FV5V8m9Iyk2GlCk6ufYqkb-rQ0MM5iQ94jfVlT1eo5jDLmbFfvLIwSCT6sldImkstQvxTG1st9ZqAAdxbGnIoIoA2fucAjbha5WfGIvJL5aejv6mXEwckUFgELW4ocLgz2CqXGex3D8XcP3wdxiBBVUqadorqig6wfyjL01qqqC6M9Gfldv_xHlrQ3ajDIS446ZzMupKElRLr7jH2PrWsDfqXLhIcRO5ArYHeose3ZQVmznqrbMjgxjFFLOthsyWBggH9Wfw5wRCRjOt4uaCQSt6lEiKr9bYKIRJ3pHMmkOs9tgPMyBgrrsdNAvklRj2sRWzj8Q2GZpNSnlXMX9swqkWEt3vIlwadPmz-u6flk9ARxoDnoohaKTueYERc7wM3Mf8vo4D2QOypP5y1PQeRrUO8ygrjpG2kBW3VtDirucAxxRCnL9Dn-nwllNQNeVeogBYXUa8oy7JjWKmlpJWqOFel8-WCelL2Wgm2Krz_6p3k0AcN9iIBdjblc2bdWgRksBK_Ve7pXfIIaK1yC3feItDblIs1rmduhArTqWd9T6bIcdvK_wx62xuTgDUxFjIQajwzvAsV8-kpO2eUiRyJZHZJsZD6TgPBE7RR8Lc5_bFy2m00)
 
-### Blocchi Principali
+## Spiegazione dei componenti
 
-I container rappresentati organizzano i componenti interni e le loro responsabilità:
+Questo diagramma entra nel dettaglio dell'architettura del backend, mostrando come i vari microservizi interagiscono tra loro per implementare le funzionalità descritte nei requisiti.
 
-1. **Smartphone Utente (App KetchApp - Flutter):** L'applicazione mobile, interfaccia utente finale, da cui l'utente interagisce con il sistema.
-2. **PC Fisso Nostro (Backend-Fe - Frontend che espone le API al client):** Un Backend For Frontend (BFF) che agisce come gateway per le richieste provenienti dall'applicazione mobile. Questo componente semplifica l'interazione del client con i vari microservizi backend e gestisce l'inoltro dei token JWT.
-3. **KetchApp Auth API (Rust - Ambiente Cloud):** Un microservizio dedicato esclusivamente alla gestione dell'autenticazione e autorizzazione.
-    - **Generazione JWT:** Dopo un login riuscito da parte dell'utente (richiesta dal BFF), la Rust Auth API genera e firma digitalmente un JSON Web Token (JWT). Questo token, contenente le informazioni sull'utente, viene inviato al BFF e poi al client.
-    - **Validazione JWT:** È anche responsabile della validazione dei token JWT per le richieste di autenticazione.
-    - Utilizza un **Auth Database (PostgreSQL)** per memorizzare i dati degli utenti.
-4. **KetchApp API (Java - Ambiente Cloud):** Il microservizio principale del backend, scritto in Java con Spring Boot, che implementa la logica di business dell'applicazione (pianificazione, statistiche, achievements, classifiche).
-    - Accede e persiste i dati nel **KetchApp Database (PostgreSQL)**.
-5. **Java Kafka API (Java - Ambiente Cloud):** Un microservizio separato che gestisce le comunicazioni asincrone all'interno dell'applicazione.
-    - **Gestisce Servizi Asincroni:** In particolare, è responsabile della produzione e del consumo di messaggi da e verso il broker Kafka.
-    - Interagisce con **Kafka (Apache Kafka)**, che funge da Message Broker per la gestione dei messaggi.
-6. **Email Inviata (Servizio esterno di invio email):** Un servizio esterno che consuma i messaggi dal topic Kafka relativi alle notifiche (es. piani di studio creati) e si occupa dell'invio effettivo delle email agli utenti.
+### Blocchi Principali (Composes)
+
+I container rappresentati organizzano i componenti interni e le loro responsabilità.
+
+- **Frontend UI (Flutter)**: Rappresenta l'interfaccia utente (come descritto nel diagramma di alto livello), da cui partono le richieste verso il backend. La sua funzione è "interagire con l'applicazione" e "richiedere dati e servizi" al BFF.
+- **Bff Compose (Backend For Frontend)**:
+    - **BackEnd Bff Api (Spring Boot)**: Questo componente agisce da "Backend For Frontend". È il primo punto di contatto per le richieste del FrontEnd e ha il compito di gestire le richieste dell'utente e richiamare i microservizi interessati. Riceve richieste di dati e servizi e a sua volta si interfaccia con l'Auth Compose per l'autenticazione e con App Compose per le altre richieste.
+- **Auth Compose**:
+    - **Auth Api (Spring Boot)**: Gestisce l'intera logica di autenticazione degli utenti. Riceve le richieste di autenticazione dal BFF e si interfaccia con l'Auth Database per la persistenza dei dati.
+    - **Auth Database**: Il database dedicato alla gestione dell'autenticazione. Memorizza e recupera i dati relativi agli utenti e alle loro credenziali.
+- **App Compose**:
+    - **App Api (Spring Boot)**: Il microservizio principale che gestisce la logica di business dell'applicazione, come la pianificazione dello studio, le statistiche e gli achievements. Si interfaccia con il database Supabase per la persistenza dei dati e con Kafka per le comunicazioni asincrone.
+- **Supabase (Container)**:
+    - **App Database**: Il database principale dell'applicazione, che gestisce tutti i dati relativi all’utente.
+- **Kafka Compose**:
+    - **Kafka Broker (Apache Kafka)**: Il broker di messaggistica asincrona. Gestisce la ricezione e l'invio di messaggi tra i microservizi, garantendo la scalabilità e l'affidabilità delle comunicazioni.
+    - **Zookeeper (Apache Zookeeper)**: Servizio di coordinamento per Kafka. Gestisce la configurazione e il coordinamento dei microservizi all'interno del cluster Kafka.
+- **Kafka Consumer Compose**:
+    - **Kafka Engine (Spring Kafka)**: Il consumatore di messaggi di Kafka. Consuma i messaggi dal broker di Kafka e schedula i jobs che invieranno le email.
+- **SMTP Service (External System)**: Il sistema di posta elettronica. Viene richiamato dal Kafka Consumer per inviare le email.
+- **Gmail Service (External System)**: Servizio che si occupa di inviare le email all’utente.
+
 ### Flusso di Interazione
 
 Il flusso di interazione tra questi componenti è il seguente:
@@ -188,6 +205,7 @@ Il flusso di interazione tra questi componenti è il seguente:
 6. Una volta che il piano di studio é stato generato dall’intelligenza artificiale viene pubblicato su un topic kafka.
 7. Il **Kafka Engine (Kafka Consumer)** consuma il messaggio dal **Kafka Broker** e genera i jobs schedulati per inviare l’email all’utente 15 minuti prima dell’inizio della sua sessione di studio.
 8. Il **Kafka Engine** invia la richiesta di email al **SMTP Service** che poi si occupa di inviarla tramite un indirizzo Gmail.
+   
 ## **Flusso del Token JWT**
 ```
 @startuml
@@ -350,40 +368,9 @@ Nei test implementati abbiamo coperto i seguenti scenari:
 
 # 5. Distribuzione e Manutenzione
 
-Il nostro applicativo non andrà in produzione, ma se dovessimo pubblicarlo eseguiremmo prima dei test per valutarne la sicurezza e le eventuali vulnerabilità. Per questo abbiamo scannerizzato i codici sorgenti dei nostri microserivzi tramite i tool SonarQube e Qodana per identificare eventuali falle di sicurezza e questo é il risultato:
+## Distribuzione
 
-## Qodana
-
-### Bff Api
-
-![image.png](Relazione%20Solution%20Design%20-%20KetchApp%2024268c8ca0e9806aaa29c47556226de5/36f9fcad-6871-4775-bd73-392fa4889eef.png)
-
-### App Api
-
-![image.png](Relazione%20Solution%20Design%20-%20KetchApp%2024268c8ca0e9806aaa29c47556226de5/716fd2f6-3e2d-4cfd-b919-be5e76914a27.png)
-
-### Kafka Engine
-
-![image.png](Relazione%20Solution%20Design%20-%20KetchApp%2024268c8ca0e9806aaa29c47556226de5/e665340d-2598-4b43-993e-e7dce6d35719.png)
-
-## SonarQube
-
-### Bff Api
-
-![Screenshot 2025-08-04 at 18.23.34.png](Relazione%20Solution%20Design%20-%20KetchApp%2024268c8ca0e9806aaa29c47556226de5/Screenshot_2025-08-04_at_18.23.34.png)
-
-### App Api
-
-![Screenshot 2025-08-04 at 18.23.27.png](Relazione%20Solution%20Design%20-%20KetchApp%2024268c8ca0e9806aaa29c47556226de5/Screenshot_2025-08-04_at_18.23.27.png)
-
-### Kafka Engine
-
-![Screenshot 2025-08-04 at 18.23.50.png](Relazione%20Solution%20Design%20-%20KetchApp%2024268c8ca0e9806aaa29c47556226de5/Screenshot_2025-08-04_at_18.23.50.png)
-
-> In generale vediamo che tutti i microservizi mostrano uno stato "Passed" nelle scansioni SonarQube, il che è un buon punto di partenza, tuttavia ci sono alcune vulnerabilitá da sistemare, in particolare in KetchApp-App-Api. Nel caso volessimo mandare in produzione il nostro applicativo dovremmo sistemare prima queste problematiche.
->
-
-## Deployment Diagram
+### Deployment Diagram
 ```
 @startuml
 !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
@@ -394,7 +381,9 @@ Person(user, "Utente", "Crea e gestisce i propri piani di studio e le relative a
 
 
 Container_Boundary(ketchapp_application, "KetchApp Application") {
-    Component(frontend, "FrontEnd UI ", "Flutter", "Permette all' utente di gestire i propri piani di studio e le relative attività.")
+Container_Boundary(mobile, "Smartphone") {
+  Component(frontend, "FrontEnd UI ", "Flutter", "Permette all' utente di gestire i propri piani di studio e le relative attività.")
+}
 
 Container_Boundary(localhost, "LocalHost") {
     Container_Boundary(bffcompose, "Bff Compose") {
@@ -426,7 +415,9 @@ Container_Boundary(localhost, "LocalHost") {
 }
 
 System_Ext(smtp, "SMTP Service", "Servizio di invio email per notifiche e comunicazioni.")
-System_Ext(mail, "Gmail Service", "Servizio di invio su Gmail per notifiche e comunicazioni.")
+Container_Boundary(google, "Google") {
+  System_Ext(mail, "Gmail Service", "Servizio di invio su Gmail per notifiche e comunicazioni.")
+}
 
 Rel_R(user, frontend, "Interagisce con l' applicazione")
 Rel_D(frontend, bffapi, "Richiede dati e servizi")
@@ -442,4 +433,40 @@ Rel_L(smtp, mail, "Invia notifiche via Email")
 
 @enduml
 ```
-![image.png](Relazione%20Solution%20Design%20-%20KetchApp%2024268c8ca0e9806aaa29c47556226de5/test-Deployment-Diagram.jpg)
+![image.png](Relazione%20Solution%20Design%20-%20KetchApp%2024268c8ca0e9806aaa29c47556226de5/test-KetchApp___Deployment_Diagram.png)
+
+### Spiegazione Merda
+
+## Manutenzione
+Il nostro applicativo non andrà in produzione, ma se dovessimo pubblicarlo eseguiremmo prima dei test per valutarne la sicurezza e le eventuali vulnerabilità. Per questo abbiamo scannerizzato i codici sorgenti dei nostri microserivzi tramite i tool SonarQube e Qodana per identificare eventuali falle di sicurezza e questo é il risultato:
+
+### Qodana
+
+- **Bff Api**
+
+![image.png](Relazione%20Solution%20Design%20-%20KetchApp%2024268c8ca0e9806aaa29c47556226de5/36f9fcad-6871-4775-bd73-392fa4889eef.png)
+
+- **App Api**
+
+![image.png](Relazione%20Solution%20Design%20-%20KetchApp%2024268c8ca0e9806aaa29c47556226de5/716fd2f6-3e2d-4cfd-b919-be5e76914a27.png)
+
+- **Kafka Engine**
+
+![image.png](Relazione%20Solution%20Design%20-%20KetchApp%2024268c8ca0e9806aaa29c47556226de5/e665340d-2598-4b43-993e-e7dce6d35719.png)
+
+### SonarQube
+
+- **Bff Api**
+
+![Screenshot 2025-08-04 at 18.23.34.png](Relazione%20Solution%20Design%20-%20KetchApp%2024268c8ca0e9806aaa29c47556226de5/Screenshot_2025-08-04_at_18.23.34.png)
+
+- **App Api**
+
+![Screenshot 2025-08-04 at 18.23.27.png](Relazione%20Solution%20Design%20-%20KetchApp%2024268c8ca0e9806aaa29c47556226de5/Screenshot_2025-08-04_at_18.23.27.png)
+
+- **Kafka Engine**
+
+![Screenshot 2025-08-04 at 18.23.50.png](Relazione%20Solution%20Design%20-%20KetchApp%2024268c8ca0e9806aaa29c47556226de5/Screenshot_2025-08-04_at_18.23.50.png)
+
+> In generale vediamo che tutti i microservizi mostrano uno stato "Passed" nelle scansioni SonarQube, il che è un buon punto di partenza, tuttavia ci sono alcune vulnerabilitá da sistemare, in particolare in KetchApp-App-Api. Nel caso volessimo mandare in produzione il nostro applicativo dovremmo sistemare prima queste problematiche.
+>
